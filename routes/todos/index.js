@@ -3,16 +3,16 @@ const router = express.Router();
 
 const {getDB, saveDB} = require("../../db");
 
-router.get("/todos/", async (req, res) => {
+router.get("/", async (req, res,next) => {
     try {
         const db = await getDB()
         res.status(200).json(db.todos);
-    } catch (e) {
-        res.status(500).json({errorMsg: e.message})
+    } catch (err) {
+        next(err)
     }
 })
 
-router.get("/todos/:id", async (req, res) => {
+router.get("/:id", async (req, res,next) => {
     try {
         const db = await getDB()
         const todo = db.todos.find(todo => todo.id === Number.parseInt(req.params.id))
@@ -20,12 +20,12 @@ router.get("/todos/:id", async (req, res) => {
             return res.status(404).end()
         }
         res.status(200).json(todo);
-    } catch (e) {
-        res.status(500).json({errorMsg: e.message})
+    } catch (err) {
+        next(err)
     }
 })
 
-router.post("/todos/", async (req, res) => {
+router.post("/", async (req, res,next) => {
     try {
         const todo = req.body
         if (!todo.title) {
@@ -37,11 +37,11 @@ router.post("/todos/", async (req, res) => {
         db.todos.push(todo)
         saveDB(db)
         res.status(201).json(todo)
-    } catch (e) {
-        res.status(500).json({errorMsg: e.message})
+    } catch (err) {
+        next(err)
     }
 })
-router.patch("/todos/:id", async (req, res) => {
+router.patch("/:id", async (req, res,next) => {
     try {
         const todo = req.body
         const db = await getDB()
@@ -53,11 +53,11 @@ router.patch("/todos/:id", async (req, res) => {
         await saveDB(ret)
         res.status(200).json(ret)
 
-    } catch (e) {
-        res.status(500).json({errorMsg: e.message})
+    } catch (err) {
+        next(err)
     }
 })
-router.delete("/todos/:id", async (req, res) => {
+router.delete("/:id", async (req, res,next) => {
     try {
         const todoId = Number.parseInt(req.params.id)
         const db = await getDB();
@@ -69,8 +69,8 @@ router.delete("/todos/:id", async (req, res) => {
         db.todos.splice(index, 1)
         await saveDB(db)
         res.status(204).end()
-    } catch (e) {
-        res.status(500).json({errorMsg: e.message})
+    } catch (err) {
+        next(err)
     }
 })
 

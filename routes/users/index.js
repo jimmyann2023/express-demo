@@ -4,11 +4,11 @@ const router = express.Router();
 //这个路由可以设置用户
 /* GET users listing. */
 
-router.put("/user", (req, res) => {
+router.put("/", (req, res) => {
     res.send("put /user")
 })
 
-router.delete("/user", (req, res) => {
+router.delete("/", (req, res) => {
     res.send("delete /user")
 })
 

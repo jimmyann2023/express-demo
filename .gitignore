@@ -3,3 +3,6 @@
 package-lock.json
 .idea
 git.md
+.DS_Store
+.vscode
+logs/*.log
